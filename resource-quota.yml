@@ -1,14 +1,13 @@
+---
 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: myrq
 spec:
   hard:
-    requests:
-      cpu: "4"
-      memory: "50Gi"
-    limits:
-      cpu: "8"
-      memory: "100Gi"
+    requests.cpu: '2'
+    requests.memory: 2Gi
+    limits.cpu: "4"
+    limits.memory: 4Gi
     pods: "10"
     services: "5"
