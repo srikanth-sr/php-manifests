@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: mysqldb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-database
+  template:
+    metadata:
+      labels:
+        app: app-database
+    spec:
+      containers:
+        - name: dbcont
+          image: srikanth891957/php:dbimg
+          ports:
+            - containerPort: 3306
+              name: mysql
+          #secret Integration
+          envFrom: 
+            - secretRef:
+                name: bankapp-db-secret
+          #Resource Quota
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Gi"
+            limits:
+              cpu: "200m"
+              memory: "258Gi"
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes: 
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 2Gi
+      
+              
+              
+          
+            
+
+        
