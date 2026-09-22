@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mypp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: cont1
+          image: srikanth891957/php:appimg
+          ports:
+            - containerPort: 80
+          #configmap Integration
+          envFrom: 
+            - configMapRef:
+                name: bankapp-config
+          #Resource Quota
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Gi"
+            limits:
+              cpu: "200m"
+              memory: "258Gi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+              
+              
+          
+            
+
+        
